@@ -14,16 +14,30 @@ TCanvas *canvas[nHistos];
 TString branchName;
 TString canvasName;
 
+//TArray color = ["kRed", "kBlue", "kGreen", "kBlack"];
+
+
+
+THStack *hs = new THStack("hs","Stacked 1D histograms");
+	
+
 for (Int_t i=0;i<nHistos; i++){
 	TString histoName="histoDetetor"+TString::Itoa(i,10);
 	histoDetetor[i]=new TH1D(histoName, histoName, nBins, minBin, maxBin);
 	branchName="detector"+TString::Itoa(i,10);
 	canvasName="canvas"+TString::Itoa(i,10);
+	histoDetetor[i]->SetFillColor(i);
 	canvas[i]=new TCanvas(canvasName, canvasName);
-	dados->Draw(branchName+">>"+histoName,branchName+">0","Same");
+	dados->Draw(branchName+">>"+histoName,branchName+">0","goff");
 	histoDetetor[i]->SetTitle(histoName);
 	histoDetetor[i]->Write();
+	hs->Add(histoDetetor[i]);
 	
 	}
-
+	
+hs->Draw("Nostack");
+	
 }
+
+
+
